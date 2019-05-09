@@ -11,8 +11,8 @@
   - hora
   - latitud
   - longitud
-- [ ] Agregar probabilidad de error de 10%
-- [ ] Guardar errores en redis
+- [x] Agregar probabilidad de error de 10%
+- [x] Guardar errores en redis
 - [ ] Guardar en redis latitud y longitud de cada ciudad
 - [ ] Actualizar fronend cada 10 segundos con websockets
 - [ ] Publicar en Heroku

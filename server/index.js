@@ -8,12 +8,18 @@ const controller = new Controller(client)
 
 const router = new Router()
 
-router.get('/api/ciudades', async (req, res) => {
+router.get('/api/ciudades', async function handler (req, res) {
   if (Math.random(0, 1) < 0.1) {
     sendError(res, new Error('How unfortunate! The API Request Failed'))
-    // TODO:
     // guardar error en redis
+    controller.save('api.errors', {
+      codigo: new Date().getTime(),
+      message: 'How unfortunate! The API Request Failed',
+      method: req.method,
+      url: req.url
+    })
     // reintentar
+    await handler.apply(null, arguments)
     return
   }
   // obtiene lista de ciudades desde redis
@@ -24,9 +30,18 @@ router.get('/api/ciudades', async (req, res) => {
   // retorna arreglo con info de ciudades
   send(res, ciudades) // res.end(JSON.stringify(ciudades))
 })
-router.get('/api/ciudades/:ciudad', async (req, res, params) => {
+router.get('/api/ciudades/:ciudad', async function handler (req, res, params) {
   if (Math.random(0, 1) < 0.1) {
     sendError(res, new Error('How unfortunate! The API Request Failed'))
+    // guardar error en redis
+    controller.save('api.errors', {
+      codigo: new Date().getTime(),
+      message: 'How unfortunate! The API Request Failed',
+      method: req.method,
+      url: req.url
+    })
+    // reintentar
+    await handler.apply(null, arguments)
     return
   }
   // busca :ciudad en redis
@@ -36,9 +51,18 @@ router.get('/api/ciudades/:ciudad', async (req, res, params) => {
   // retorna datos de ciudad
   send(res, Object.assign({}, { codigo: params.ciudad }, ciudad)) // res.end(JSON.stringify(Object.assign({}, { codigo: params.ciudad }, ciudad)))
 })
-router.post('/api/ciudades', async (req, res) => {
+router.post('/api/ciudades', async function handler (req, res) {
   if (Math.random(0, 1) < 0.1) {
     sendError(res, new Error('How unfortunate! The API Request Failed'))
+    // guardar error en redis
+    controller.save('api.errors', {
+      codigo: new Date().getTime(),
+      message: 'How unfortunate! The API Request Failed',
+      method: req.method,
+      url: req.url
+    })
+    // reintentar
+    await handler.apply(null, arguments)
     return
   }
   // agrega datos de ciudad a redis
