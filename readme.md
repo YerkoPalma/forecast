@@ -20,7 +20,7 @@
 ## API
 
 - GET  /api/ciudades
-- GET  /api/ciudades/:ciudad/info
+- GET  /api/ciudades/:ciudad
 - POST /api/ciudades
 - PUT  /api/ciudades/:ciudad (opcional)
 
@@ -30,7 +30,7 @@ Request -> Redis -> forecast.io -> Response
 
 ## Redis Store
 
-- ciudades -> [`CL`, `CH`, `NZ`, `AU`, `UK`, 'USA']
+- ciudades -> [`CL`, `CH`, `NZ`, `AU`, `UK`, `USA`]
 
 ## License
 [MIT](/license)
