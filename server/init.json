@@ -1,0 +1,38 @@
+[
+  {
+    "codigo": "CH",
+    "nombre": "Zurich",
+    "lat": "47.376888",
+    "lang": "8.541694"
+  },
+  {
+    "codigo": "CL",
+    "nombre": "Santiago",
+    "lat": "-33.448891",
+    "lang": "-70.669266"
+  },
+  {
+    "codigo": "NZ",
+    "nombre": "Auckland",
+    "lat": "-36.848461",
+    "lang": "174.763336"
+  },
+  {
+    "codigo": "AU",
+    "nombre": "Sydney",
+    "lat": "-33.868820",
+    "lang": "151.209290"
+  },
+  {
+    "codigo": "UK",
+    "nombre": "Londres",
+    "lat": "51.507351",
+    "lang": "-0.127758"
+  },
+  {
+    "codigo": "USA",
+    "nombre": "Georgia",
+    "lat": "32.165623",
+    "lang": "-82.900078"
+  }
+]

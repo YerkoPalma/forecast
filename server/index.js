@@ -5,6 +5,7 @@ const { send, sendError, json } = require('./lib/server')
 const redis = require('redis')
 const client = redis.createClient()
 const controller = new Controller(client)
+const initialData = require('./init.json')
 
 const router = new Router()
 
@@ -71,11 +72,12 @@ router.post('/api/ciudades', async function handler (req, res) {
   send(res, ciudades) // res.end(JSON.stringify(ciudades))
 })
 
-const server = http.createServer()
+const server = http.createServer(() => {
+  // guardar en redis información de ciudades iniciales
+  controller.saveAll('ciudades', initialData)
+})
 
 server.on('request', (req, res) => {
-  // TODO:
-  // guardar en redis información de ciudades iniciales
   router.lookup(req, res)
 })
 

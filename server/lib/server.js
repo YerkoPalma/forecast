@@ -1,9 +1,11 @@
 const { promisify } = require('util')
+const { get } = require('http')
 
 exports.send = send
 exports.sendError = sendError
 exports.body = body
 exports.json = json
+exports.request = request
 
 /**
  * Send a successful (HTTP 200) response
@@ -66,4 +68,16 @@ async function json (req) {
   const bodyPromise = promisify(body)
   const value = await bodyPromise(req)
   return JSON.parse(value.toString())
+}
+
+/**
+ * Make a get request and get a json data
+ * @param {String} url Url to make the request
+ * @returns {Promise<Object>} Returns a promise with the corresponding json body
+ */
+async function request (url) {
+  const asyncGet = promisify(get)
+  const req = asyncGet(url)
+  const data = await json(req)
+  return data
 }
