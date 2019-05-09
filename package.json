@@ -3,13 +3,13 @@
   "description": "monitoreo de horario nacional e internacional",
   "author": "YerkoPalma",
   "version": "0.1.0",
-  "main": "index.js",
+  "main": "server/index.js",
   "files": [
-    "index.js"
+    "server"
   ],
   "scripts": {
     "test": "standard --verbose | snazzy && tape test.js | tap-summary",
-    "start": "node index.js"
+    "start": "node server/index.js"
   },
   "repository": "YerkoPalma/forecast",
   "license": "MIT",
