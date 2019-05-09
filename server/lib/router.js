@@ -1,4 +1,8 @@
-module.exports = class Router {
+/** Litle http router */
+class Router {
+  /**
+   * creates internal routes Set's
+   */
   constructor () {
     this.routes = {
       GET: new Set(),
@@ -7,6 +11,13 @@ module.exports = class Router {
     }
   }
 
+  /**
+   * Adds a new route to the corresponding internal Set
+   * @param {String} method Http method for this route
+   * @param {String} route Route path
+   * @param {Function} fn Route handler
+   * @returns {void}
+   */
   request (method, route, fn) {
     const regex = new RegExp(route.replace(/:(\w*)/g, '(.*)').replace(/\//g, '\\/') + '$')
     const paramsNames = parseParams(route)
@@ -17,18 +28,42 @@ module.exports = class Router {
     })
   }
 
+  /**
+   * Adds a route to the Get Set
+   * @param {String} route Route path
+   * @param {Function} fn Route handler
+   * @returns {void}
+   */
   get (route, fn) {
     this.request('GET', route, fn)
   }
 
+  /**
+   * Adds a route to the Post Set
+   * @param {String} route Route path
+   * @param {Function} fn Route handler
+   * @returns {void}
+   */
   post (route, fn) {
     this.request('POST', route, fn)
   }
 
+  /**
+   * Adds a route to the Put Set
+   * @param {String} route Route path
+   * @param {Function} fn Route handler
+   * @returns {void}
+   */
   put (route, fn) {
     this.request('PUT', route, fn)
   }
 
+  /**
+   * Start the router, search routes and run handlers
+   * @param {IncomingMessage} req Node native server request
+   * @param {ServerResponse} res Node native server response
+   * @returns {void}
+   */
   lookup (req, res) {
     let route
     for (let r of this.routes[req.method]) {
@@ -48,6 +83,12 @@ module.exports = class Router {
   }
 }
 
+/**
+ * Get an array of params names for a route
+ * @private
+ * @param {String} route Http route
+ * @returns {Array<String>} Params names
+ */
 function parseParams (route) {
   const regex = /:(\w+)/g
   let match
@@ -62,3 +103,5 @@ function parseParams (route) {
   }
   return params
 }
+
+module.exports = Router
