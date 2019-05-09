@@ -1,7 +1,6 @@
 const http = require('http')
 const Router = require('./lib/router')
-const { json } = require('./lib/body')
-const { send, sendError } = require('./lib/server')
+const { send, sendError, json } = require('./lib/server')
 const redis = require('redis')
 const { promisify } = require('util')
 const client = redis.createClient()
