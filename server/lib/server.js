@@ -1,11 +1,11 @@
 const { promisify } = require('util')
-const { get } = require('http')
+const https = require('https')
 
 exports.send = send
 exports.sendError = sendError
 exports.body = body
 exports.json = json
-exports.request = request
+exports.request = promisify(request)
 
 /**
  * Send a successful (HTTP 200) response
@@ -75,9 +75,15 @@ async function json (req) {
  * @param {String} url Url to make the request
  * @returns {Promise<Object>} Returns a promise with the corresponding json body
  */
-async function request (url) {
-  const asyncGet = promisify(get)
-  const req = asyncGet(url)
-  const data = await json(req)
-  return data
+function request (url, cb) {
+  https.get(url, res => {
+    if (res.statusCode === 200) {
+      json(res)
+        .then(data => cb(null, data))
+        .catch(err => cb(err))
+    } else {
+      cb(new Error('Request failed'))
+    }
+  })
+    .on('error', e => cb(e))
 }

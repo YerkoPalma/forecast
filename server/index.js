@@ -27,11 +27,11 @@ router.get('/api/ciudades', async function handler (req, res) {
   // obtiene lista de ciudades desde redis
   const ciudades = await controller.loadAll('ciudades')
   // por cada ciudad
-  const data = ciudades.map(async ciudad => {
-    const { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
-    // obtiene datos de ciudad desde forecast.io
-    return Object.assign({}, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature })
-  })
+  let data = []
+  for (let ciudad of ciudades) {
+    let { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
+    data.push(Object.assign({}, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
+  }
 
   send(res, data)
 })
@@ -52,7 +52,7 @@ router.get('/api/ciudades/:ciudad', async function handler (req, res, params) {
   // busca :ciudad en redis
   const ciudad = await controller.load(params.ciudad)
   // obtiene datos de ciudad en forecast.io
-  const { currently } = request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
+  const { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
   // retorna datos de ciudad
   send(res, Object.assign({}, { codigo: params.ciudad }, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
 })
@@ -76,15 +76,14 @@ router.post('/api/ciudades', async function handler (req, res) {
   send(res, ciudades) // res.end(JSON.stringify(ciudades))
 })
 
-const server = http.createServer(() => {
-  // guardar en redis información de ciudades iniciales
-  controller.saveAll('ciudades', initialData)
-})
+const server = http.createServer()
 
 server.on('request', (req, res) => {
   router.lookup(req, res)
 })
 
-server.listen(3000, () => {
-  console.log('listeniig on port 3000')
+server.listen(3000, async () => {
+  console.log('listening on port 3000')
+  // guardar en redis información de ciudades iniciales
+  await controller.saveAll('ciudades', initialData)
 })

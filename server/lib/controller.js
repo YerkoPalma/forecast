@@ -13,6 +13,7 @@ class Controller {
     this.hgetall = promisify(client.hgetall).bind(client)
     this.set = promisify(client.set).bind(client)
     this.get = promisify(client.get).bind(client)
+    this.del = promisify(client.del).bind(client)
   }
 
   /**
@@ -67,7 +68,13 @@ class Controller {
    */
   async saveAll (key, values) {
     if (!Array.isArray(values)) return null
-    return Promise.all(values.map(value => this.save(key, value)))
+    let inserted
+    // delete previous records
+    await this.del(key)
+    for (let value of values) {
+      inserted = await this.save(key, value)
+    }
+    return inserted
   }
 }
 
