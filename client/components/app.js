@@ -1,7 +1,17 @@
 import React, { Component } from 'react'
+import Card from './card'
 class App extends Component {
   render () {
-    return (<h1>My React App</h1>)
+    return (
+      <div className='center'>
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+        <Card />
+      </div>
+    )
   }
 }
 
