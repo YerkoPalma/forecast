@@ -74,7 +74,7 @@ router.post('/api/ciudades', async function handler (req, res) {
   // agrega datos de ciudad a redis
   const ciudad = await json(req)
   const ciudades = await controller.save('ciudades', ciudad)
-  send(res, ciudades) // res.end(JSON.stringify(ciudades))
+  send(res, ciudades)
 })
 
 const server = http.createServer()

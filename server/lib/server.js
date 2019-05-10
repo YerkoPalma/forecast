@@ -82,7 +82,7 @@ function request (url, cb) {
         .then(data => cb(null, data))
         .catch(err => cb(err))
     } else {
-      cb(new Error('Request failed'))
+      cb(new Error(`(${res.statusCode}) - ${res.statusMessage}`))
     }
   })
     .on('error', e => cb(e))
