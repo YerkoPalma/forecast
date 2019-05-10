@@ -27,7 +27,7 @@ class App extends Component {
   render () {
     return (
       <div className='center'>
-        {this.ciudades.map(ciudad => <Card city={ciudad} />)}
+        {this.ciudades.map(ciudad => <Card key={ciudad.codigo} city={ciudad} />)}
       </div>
     )
   }
