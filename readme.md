@@ -15,7 +15,7 @@
 - [x] Guardar errores en redis
 - [x] Guardar en redis latitud y longitud de cada ciudad
 - [ ] Actualizar frontend cada 10 segundos con websockets
-- [ ] Publicar en Heroku
+- [x] Publicar en Heroku
 
 ## API
 
