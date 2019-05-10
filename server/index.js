@@ -6,8 +6,9 @@ const redis = require('redis')
 const client = redis.createClient()
 const controller = new Controller(client)
 const initialData = require('./init.json')
+const staticHandler = require('serve-handler')
 
-const router = new Router()
+const router = new Router(staticHandler)
 const FORECAST_URL = `https://api.darksky.net/forecast/${process.env.API_KEY}`
 
 router.get('/api/ciudades', async function handler (req, res) {

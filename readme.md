@@ -5,16 +5,16 @@
 
 ## TODO
 
-- [ ] Obtener hora y temperatura actual
+- [x] Obtener hora y temperatura actual
 - [ ] Mostrar en pantalla completa los datos
-- [ ] Obtener datos de una ciudad
+- [x] Obtener datos de una ciudad
   - hora
   - latitud
   - longitud
 - [x] Agregar probabilidad de error de 10%
 - [x] Guardar errores en redis
-- [ ] Guardar en redis latitud y longitud de cada ciudad
-- [ ] Actualizar fronend cada 10 segundos con websockets
+- [x] Guardar en redis latitud y longitud de cada ciudad
+- [ ] Actualizar frontend cada 10 segundos con websockets
 - [ ] Publicar en Heroku
 
 ## API

@@ -29,6 +29,7 @@
     "tape": "^4.10.1"
   },
   "dependencies": {
-    "redis": "^2.8.0"
+    "redis": "^2.8.0",
+    "serve-handler": "^6.0.0"
   }
 }

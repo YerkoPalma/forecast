@@ -1,13 +1,19 @@
+const path = require('path')
+
 /** Litle http router */
 class Router {
   /**
    * creates internal routes Set's
+   * @param {Function} defaultRoute Default handler when no route match current url
    */
-  constructor () {
+  constructor (defaultRoute) {
     this.routes = {
       GET: new Set(),
       POST: new Set(),
       PUT: new Set()
+    }
+    if (typeof defaultRoute === 'function') {
+      this.default = defaultRoute
     }
   }
 
@@ -79,6 +85,11 @@ class Router {
         params[route.paramsNames[i]] = p
       })
       route.handler(req, res, params)
+    } else if (this.default) {
+      this.default(req, res, {
+        public: path.join(__dirname, '..', '..', 'public'),
+        directoryListing: false
+      })
     }
   }
 }
