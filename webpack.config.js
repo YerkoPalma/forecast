@@ -3,6 +3,7 @@ const HtmlWebPackPlugin = require('html-webpack-plugin')
 const ExtractTextPlugin = require('extract-text-webpack-plugin')
 
 module.exports = {
+  devtool: 'source-map',
   entry: './client/index.js',
   output: {
     path: path.join(__dirname, '/public'),

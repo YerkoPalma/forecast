@@ -12,7 +12,7 @@
   },
   "scripts": {
     "test": "standard --verbose | snazzy && tape test.js | tap-summary",
-    "build": "node_modules/.bin/webpack --config webpack.config.js --mode production",
+    "build": "node_modules/.bin/webpack --config webpack.config.js --mode development",
     "start": "node server/index.js"
   },
   "repository": "YerkoPalma/forecast",
