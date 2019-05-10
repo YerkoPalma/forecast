@@ -9,7 +9,8 @@
   ],
   "scripts": {
     "test": "standard --verbose | snazzy && tape test.js | tap-summary",
-    "start": "node server/index.js"
+    "build": "node_modules/.bin/webpack --config webpack.config.js --mode production",
+    "start": "npm run build && node server/index.js"
   },
   "repository": "YerkoPalma/forecast",
   "license": "MIT",
@@ -23,12 +24,23 @@
     "ubicacion"
   ],
   "devDependencies": {
+    "@babel/core": "^7.4.4",
+    "@babel/preset-env": "^7.4.4",
+    "@babel/preset-react": "^7.0.0",
+    "babel": "^6.23.0",
+    "babel-loader": "^8.0.5",
+    "extract-text-webpack-plugin": "^4.0.0-beta.0",
+    "html-webpack-plugin": "^3.2.0",
     "snazzy": "^8.0.0",
     "standard": "^12.0.1",
     "tap-summary": "^4.0.0",
-    "tape": "^4.10.1"
+    "tape": "^4.10.1",
+    "webpack": "^4.31.0",
+    "webpack-cli": "^3.3.2"
   },
   "dependencies": {
+    "react": "^16.8.6",
+    "react-dom": "^16.8.6",
     "redis": "^2.8.0",
     "serve-handler": "^6.0.0"
   }
