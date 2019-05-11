@@ -126,6 +126,7 @@ wsServer.on('connection', (socket, req) => {
         setTimeout(handler, 10 * 1000)
       })
     } catch (e) {
+      socket.send(e.message)
     }
   }
 })

@@ -7,20 +7,27 @@ class App extends Component {
     this.ciudades = []
     if (WebSocket) {
       console.log('updating with websockets')
-      this.ws = new WebSocket(`${window.location.protocol.replace('http', 'ws')}//${window.location.host}`)
+      this.ws = new WebSocket(`ws://${window.location.host}`)
       this.ws.addEventListener('message', ({ data }) => {
         console.log('got a message')
-        this.ciudades = data
+        if (!data || typeof data === 'string') {
+          this.alternativeFetch()
+        } else {
+          this.ciudades = data
+        }
       })
     } else {
-      setInterval(async () => {
-        console.log('updating with fetch')
-        // use fetch
-        const response = await fetch('/api/ciudades')
-        this.ciudades = await response.json()
-        this.forceUpdate()
-      }, 10 * 1000)
+      this.alternativeFetch()
     }
+  }
+  alternativeFetch () {
+    setInterval(async () => {
+      console.log('updating with fetch')
+      // use fetch
+      const response = await fetch('/api/ciudades')
+      this.ciudades = await response.json()
+      this.forceUpdate()
+    }, 10 * 1000)
   }
   render () {
     return (
