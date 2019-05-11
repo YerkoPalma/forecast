@@ -8,11 +8,8 @@ class App extends Component {
     if (WebSocket && process.env.WS_URL) {
       this.ws = new WebSocket(process.env.WS_URL)
     }
-  }
-  componentDidMount () {
-    // use setTimeout to send websocket message every 10 seconds
     const useWebSocket = !!this.ws
-    setTimeout(async () => {
+    setInterval(async () => {
       console.log('updating...')
       if (useWebSocket) {
 
@@ -27,7 +24,7 @@ class App extends Component {
   render () {
     return (
       <div className='center'>
-        {this.ciudades.map(ciudad => <Card key={ciudad.codigo} city={ciudad} />)}
+        {Array.isArray(this.ciudades) && this.ciudades.map(ciudad => <Card key={ciudad.codigo} city={ciudad} />)}
       </div>
     )
   }

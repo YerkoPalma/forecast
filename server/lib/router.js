@@ -86,6 +86,8 @@ class Router {
       })
       route.handler(req, res, params)
     } else if (this.default) {
+      console.log(req.url)
+      console.log(path.join(__dirname, '..', '..', 'public'))
       this.default(req, res, {
         public: path.join(__dirname, '..', '..', 'public'),
         directoryListing: false

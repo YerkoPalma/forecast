@@ -1,7 +1,13 @@
 import React, { Component } from 'react'
 class Card extends Component {
   get image () {
-    return require(`../assets/${this.props.city.nombre}.jpg`)
+    return require(`../assets/${this.props.city.nombre.toLowerCase()}.jpg`)
+  }
+  get hour () {
+    return new Date(this.props.city.time).getHours()
+  }
+  get minutes () {
+    return new Date(this.props.city.time).getMinutes()
   }
   render () {
     return (
@@ -13,7 +19,8 @@ class Card extends Component {
               <h1 className='f5 f4-ns mv0'>{this.props.city.nombre}</h1>
             </div>
             <div className='dtc tr'>
-              <h2 className='f5 mv0'>{this.props.city.temperature}°C - {this.props.city.time}</h2>
+              <h2 className='f5 mv0'>{this.props.city.temperature}°C</h2>
+              <h2 className='f5 mv0'>{this.hour}:{this.minutes}</h2>
             </div>
           </div>
           <p className='f6 lh-copy measure mt2 mid-gray'>

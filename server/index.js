@@ -25,16 +25,20 @@ router.get('/api/ciudades', async function handler (req, res) {
     await handler.apply(null, arguments)
     return
   }
-  // obtiene lista de ciudades desde redis
-  const ciudades = await controller.loadAll('ciudades')
-  // por cada ciudad
-  let data = []
-  for (let ciudad of ciudades) {
-    let { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
-    data.push(Object.assign({}, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
-  }
+  try {
+    // obtiene lista de ciudades desde redis
+    const ciudades = await controller.loadAll('ciudades')
+    // por cada ciudad
+    let data = []
+    for (let ciudad of ciudades) {
+      let { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
+      data.push(Object.assign({}, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
+    }
 
-  send(res, data)
+    send(res, data)
+  } catch (e) {
+    sendError(res, e)
+  }
 })
 router.get('/api/ciudades/:ciudad', async function handler (req, res, params) {
   if (Math.random(0, 1) < 0.1) {
@@ -50,12 +54,16 @@ router.get('/api/ciudades/:ciudad', async function handler (req, res, params) {
     await handler.apply(null, arguments)
     return
   }
-  // busca :ciudad en redis
-  const ciudad = await controller.load(params.ciudad)
-  // obtiene datos de ciudad en forecast.io
-  const { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
-  // retorna datos de ciudad
-  send(res, Object.assign({}, { codigo: params.ciudad }, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
+  try {
+    // busca :ciudad en redis
+    const ciudad = await controller.load(params.ciudad)
+    // obtiene datos de ciudad en forecast.io
+    const { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
+    // retorna datos de ciudad
+    send(res, Object.assign({}, { codigo: params.ciudad }, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
+  } catch (e) {
+    sendError(res, e)
+  }
 })
 router.post('/api/ciudades', async function handler (req, res) {
   if (Math.random(0, 1) < 0.1) {
@@ -71,10 +79,14 @@ router.post('/api/ciudades', async function handler (req, res) {
     await handler.apply(null, arguments)
     return
   }
-  // agrega datos de ciudad a redis
-  const ciudad = await json(req)
-  const ciudades = await controller.save('ciudades', ciudad)
-  send(res, ciudades)
+  try {
+    // agrega datos de ciudad a redis
+    const ciudad = await json(req)
+    const ciudades = await controller.save('ciudades', ciudad)
+    send(res, ciudades)
+  } catch (e) {
+    sendError(res, e)
+  }
 })
 
 const server = http.createServer()
