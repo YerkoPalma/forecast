@@ -9,6 +9,9 @@ class Card extends Component {
   get minutes () {
     return new Date(this.props.city.time).getMinutes()
   }
+  get seconds () {
+    return new Date(this.props.city.time).getSeconds()
+  }
   render () {
     return (
       <article className='br2 ba dib dark-gray b--black-10 ma4 w-100 w-50-m w-25-l mw5'>
@@ -20,7 +23,7 @@ class Card extends Component {
             </div>
             <div className='dtc tr'>
               <h2 className='f5 mv0'>{this.props.city.temperature}°C</h2>
-              <h2 className='f5 mv0'>{this.hour}:{this.minutes}</h2>
+              <h2 className='f5 mv0'>{this.hour}:{this.minutes}:{this.seconds}</h2>
             </div>
           </div>
           <p className='f6 lh-copy measure mt2 mid-gray'>

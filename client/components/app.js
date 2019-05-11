@@ -5,21 +5,22 @@ class App extends Component {
   constructor () {
     super()
     this.ciudades = []
-    if (WebSocket && process.env.WS_URL) {
-      this.ws = new WebSocket(process.env.WS_URL)
-    }
-    const useWebSocket = !!this.ws
-    setInterval(async () => {
-      console.log('updating...')
-      if (useWebSocket) {
-
-      } else {
+    if (WebSocket) {
+      console.log('updating with websockets')
+      this.ws = new WebSocket(`${window.location.protocol.replace('http', 'ws')}//${window.location.host}`)
+      this.ws.addEventListener('message', ({ data }) => {
+        console.log('got a message')
+        this.ciudades = data
+      })
+    } else {
+      setInterval(async () => {
+        console.log('updating with fetch')
         // use fetch
         const response = await fetch('/api/ciudades')
         this.ciudades = await response.json()
-      }
-      this.forceUpdate()
-    }, 10 * 1000)
+        this.forceUpdate()
+      }, 10 * 1000)
+    }
   }
   render () {
     return (

@@ -48,6 +48,7 @@
     "react": "^16.8.6",
     "react-dom": "^16.8.6",
     "redis": "^2.8.0",
-    "serve-handler": "^6.0.0"
+    "serve-handler": "^6.0.0",
+    "ws": "^7.0.0"
   }
 }

@@ -6,6 +6,7 @@ exports.sendError = sendError
 exports.body = body
 exports.json = json
 exports.request = promisify(request)
+exports.localRequest = promisify(localRequest)
 
 /**
  * Send a successful (HTTP 200) response
@@ -77,6 +78,30 @@ async function json (req) {
  */
 function request (url, cb) {
   https.get(url, res => {
+    if (res.statusCode === 200) {
+      json(res)
+        .then(data => cb(null, data))
+        .catch(err => cb(err))
+    } else {
+      cb(new Error(`(${res.statusCode}) - ${res.statusMessage}`))
+    }
+  })
+    .on('error', e => cb(e))
+}
+
+/**
+ * Make a get request and get a json data
+ * @param {String} url Url to make the request
+ * @returns {Promise<Object>} Returns a promise with the corresponding json body
+ */
+function localRequest (url, cb) {
+  const options = {
+    host: 'localhost',
+    method: 'GET',
+    port: process.env.PORT || 3000,
+    path: url
+  }
+  https.get(options, res => {
     if (res.statusCode === 200) {
       json(res)
         .then(data => cb(null, data))

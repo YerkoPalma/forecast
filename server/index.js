@@ -1,12 +1,13 @@
 const http = require('http')
 const Router = require('./lib/router')
 const Controller = require('./lib/controller')
-const { send, sendError, json, request } = require('./lib/server')
+const { send, sendError, json, request, localRequest } = require('./lib/server')
 const redis = require('redis')
 const client = process.env.REDIS_URL ? redis.createClient(process.env.REDIS_URL) : redis.createClient()
 const controller = new Controller(client)
 const initialData = require('./init.json')
 const staticHandler = require('serve-handler')
+const WebSocket = require('ws')
 
 const router = new Router(staticHandler)
 const FORECAST_URL = `https://api.darksky.net/forecast/${process.env.API_KEY}`
@@ -90,6 +91,18 @@ router.post('/api/ciudades', async function handler (req, res) {
 })
 
 const server = http.createServer()
+const wsServer = new WebSocket.Server({ server })
+
+wsServer.on('connection', (socket, req) => {
+  socket.url = req.url
+  socket.on('disconnect', () => {
+    console.log('someone left')
+  })
+  setInterval(async () => {
+    const ciudades = await localRequest('/api/ciudades')
+    socket.send(ciudades)
+  }, 10 * 1000)
+})
 
 server.on('request', (req, res) => {
   router.lookup(req, res)
