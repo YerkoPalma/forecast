@@ -1,7 +1,7 @@
 const http = require('http')
 const Router = require('./lib/router')
 const Controller = require('./lib/controller')
-const { send, sendError, json, request, localRequest } = require('./lib/server')
+const { send, sendError, json, request } = require('./lib/server')
 const redis = require('redis')
 const client = process.env.REDIS_URL ? redis.createClient(process.env.REDIS_URL) : redis.createClient()
 const controller = new Controller(client)
@@ -98,10 +98,36 @@ wsServer.on('connection', (socket, req) => {
   socket.on('disconnect', () => {
     console.log('someone left')
   })
-  setInterval(async () => {
-    const ciudades = await localRequest('/api/ciudades')
-    socket.send(ciudades)
-  }, 10 * 1000)
+  handler()
+  async function handler () {
+    if (Math.random(0, 1) < 0.1) {
+      // guardar error en redis
+      controller.save('api.errors', {
+        codigo: new Date().getTime(),
+        message: 'How unfortunate! The API Request Failed',
+        method: req.method,
+        url: req.url
+      })
+      // reintentar
+      await handler.apply(null, arguments)
+      return
+    }
+    try {
+      // obtiene lista de ciudades desde redis
+      const ciudades = await controller.loadAll('ciudades')
+      // por cada ciudad
+      let data = []
+      for (let ciudad of ciudades) {
+        let { currently } = await request(`${FORECAST_URL}/${ciudad.lat},${ciudad.lang}?units=si`)
+        data.push(Object.assign({}, ciudad, { time: new Date(currently.time * 1000), temperature: currently.temperature }))
+      }
+
+      socket.send(ciudades, () => {
+        setTimeout(handler, 10 * 1000)
+      })
+    } catch (e) {
+    }
+  }
 })
 
 server.on('request', (req, res) => {
