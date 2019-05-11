@@ -3,10 +3,10 @@
 
 > monitoreo de horario nacional e internacional
 
-## TODO
+## Features
 
 - [x] Obtener hora y temperatura actual
-- [ ] Mostrar en pantalla completa los datos
+- [x] Mostrar en pantalla completa los datos
 - [x] Obtener datos de una ciudad
   - hora
   - latitud
@@ -14,7 +14,7 @@
 - [x] Agregar probabilidad de error de 10%
 - [x] Guardar errores en redis
 - [x] Guardar en redis latitud y longitud de cada ciudad
-- [ ] Actualizar frontend cada 10 segundos con websockets
+- [x] Actualizar frontend cada 10 segundos con websockets
 - [x] Publicar en Heroku
 
 ## API
@@ -28,9 +28,54 @@
 
 Request -> Redis -> forecast.io -> Response
 
-## Redis Store
+## Instalación
 
-- ciudades -> [`CL`, `CH`, `NZ`, `AU`, `UK`, `USA`]
+Primero instalar redis.
+
+### Windows
+
+Descargar el ejecutable de redis en el siguiente enlace: https://github.com/dmajkic/redis/downloadsl Luego descomprimir y buscar el archivo `redis_server.exe` y ejecutarlo para correr el servidor de redis
+
+### Unix
+
+Seguir las [instrucciones oficiales](https://redis.io/topics/quickstart)
+
+```bash
+$ wget http://download.redis.io/redis-stable.tar.gz
+$ tar xvzf redis-stable.tar.gz
+$ cd redis-stable
+$ make
+```
+
+Luego correr el servidor
+
+```bash
+$ redis-server
+```
+
+Con el servidor de redis listo, installar los archivos del proyecto
+
+```bash
+$ git clone https://github.com/YerkoPalma/forecast.git
+$ cd forecast
+$ npm install
+```
+
+Luego, actualizar el cliente
+
+```bash
+$ npm run build
+```
+
+Antes de poder correr el servidor es necesario configurar una variable de ambiento con el id del servicio de tiempo. Se puede obtener en la siguiente url: https://darksky.net/dev/account
+
+Una vez obtenida la api key configurar en la variable de ambiente `API_KEY`
+
+Finalmente, correr el servidor
+
+```bash
+$ npm start
+```
 
 ## License
 [MIT](/license)
