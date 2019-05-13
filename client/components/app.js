@@ -7,7 +7,7 @@ class App extends Component {
     this.ciudades = []
     if (WebSocket) {
       console.log('updating with websockets')
-      this.ws = new WebSocket(`ws://${window.location.host}`)
+      this.ws = new WebSocket(`${window.location.protocol.replace('http', 'ws').replace(':', '')}://${window.location.host}`)
       this.ws.addEventListener('message', ({ data }) => {
         console.log('got a message')
         if (!data || typeof data === 'string') {
